@@ -15,6 +15,8 @@ public class TangledDbContext : DbContext
     public DbSet<ProjectMaterial> ProjectMaterials => Set<ProjectMaterial>();
     public DbSet<ProjectIdea> ProjectIdeas => Set<ProjectIdea>();
     public DbSet<ProjectImage> ProjectImages => Set<ProjectImage>();
+    public DbSet<MaterialImage> MaterialImages => Set<MaterialImage>();
+    public DbSet<ProjectIdeaImage> ProjectIdeaImages => Set<ProjectIdeaImage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -73,6 +75,30 @@ public class TangledDbContext : DbContext
             entity.HasOne(e => e.Project)
                 .WithMany(p => p.ProjectImages)
                 .HasForeignKey(e => e.ProjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // MaterialImage configuration
+        modelBuilder.Entity<MaterialImage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.FileName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.FilePath).IsRequired().HasMaxLength(500);
+            entity.HasOne(e => e.Material)
+                .WithMany(m => m.MaterialImages)
+                .HasForeignKey(e => e.MaterialId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ProjectIdeaImage configuration
+        modelBuilder.Entity<ProjectIdeaImage>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.FileName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.FilePath).IsRequired().HasMaxLength(500);
+            entity.HasOne(e => e.ProjectIdea)
+                .WithMany(pi => pi.ProjectIdeaImages)
+                .HasForeignKey(e => e.ProjectIdeaId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

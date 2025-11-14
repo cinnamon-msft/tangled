@@ -24,4 +24,5 @@ public class Material
 
     // Navigation properties
     public ICollection<ProjectMaterial> ProjectMaterials { get; set; } = new List<ProjectMaterial>();
+    public ICollection<MaterialImage> MaterialImages { get; set; } = new List<MaterialImage>();
 }
