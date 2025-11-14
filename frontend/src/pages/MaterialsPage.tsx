@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { materialsApi } from '../api';
 import { YarnWeight } from '../types';
+import CreateMaterialModal from '../components/CreateMaterialModal';
 
 export default function MaterialsPage() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: materials, isLoading, error } = useQuery({
     queryKey: ['materials'],
     queryFn: materialsApi.getAll,
@@ -38,10 +41,18 @@ export default function MaterialsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Materials</h1>
-        <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+        >
           Add Material
         </button>
       </div>
+
+      <CreateMaterialModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+      />
 
       {!materials || materials.length === 0 ? (
         <div className="text-center py-12 text-gray-500">

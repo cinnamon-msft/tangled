@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectIdeasApi } from '../api';
+import CreateIdeaModal from '../components/CreateIdeaModal';
 
 export default function IdeasPage() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: ideas, isLoading, error } = useQuery({
     queryKey: ['projectIdeas'],
     queryFn: projectIdeasApi.getAll,
@@ -23,10 +26,18 @@ export default function IdeasPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Project Ideas</h1>
-        <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+        >
           New Idea
         </button>
       </div>
+
+      <CreateIdeaModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+      />
 
       {!ideas || ideas.length === 0 ? (
         <div className="text-center py-12 text-gray-500">

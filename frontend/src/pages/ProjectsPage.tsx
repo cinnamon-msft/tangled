@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectsApi } from '../api';
 import { CraftType, ProjectStatus } from '../types';
+import CreateProjectModal from '../components/CreateProjectModal';
 
 export default function ProjectsPage() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: projectsApi.getAll,
@@ -48,10 +51,18 @@ export default function ProjectsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-        <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700">
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+        >
           New Project
         </button>
       </div>
+
+      <CreateProjectModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+      />
 
       {!projects || projects.length === 0 ? (
         <div className="text-center py-12 text-gray-500">
