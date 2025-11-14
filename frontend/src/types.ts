@@ -1,26 +1,29 @@
 // Enums matching backend
-export enum CraftType {
-  Knitting = 0,
-  Crochet = 1,
-  Embroidery = 2,
-}
+export type CraftType = 0 | 1 | 2;
+export const CraftType = {
+  Knitting: 0 as CraftType,
+  Crochet: 1 as CraftType,
+  Embroidery: 2 as CraftType,
+} as const;
 
-export enum ProjectStatus {
-  Planning = 0,
-  InProgress = 1,
-  Completed = 2,
-}
+export type ProjectStatus = 0 | 1 | 2;
+export const ProjectStatus = {
+  Planning: 0 as ProjectStatus,
+  InProgress: 1 as ProjectStatus,
+  Completed: 2 as ProjectStatus,
+} as const;
 
-export enum YarnWeight {
-  Lace = 0,
-  Fingering = 1,
-  Sport = 2,
-  DK = 3,
-  Worsted = 4,
-  Bulky = 5,
-  SuperBulky = 6,
-  Jumbo = 7,
-}
+export type YarnWeight = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export const YarnWeight = {
+  Lace: 0 as YarnWeight,
+  Fingering: 1 as YarnWeight,
+  Sport: 2 as YarnWeight,
+  DK: 3 as YarnWeight,
+  Worsted: 4 as YarnWeight,
+  Bulky: 5 as YarnWeight,
+  SuperBulky: 6 as YarnWeight,
+  Jumbo: 7 as YarnWeight,
+} as const;
 
 // Entities
 export interface Material {
