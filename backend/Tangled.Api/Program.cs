@@ -87,10 +87,14 @@ app.MapDelete("/api/projects/{id}", async (int id, TangledDbContext db) =>
 
 // Materials endpoints
 app.MapGet("/api/materials", async (TangledDbContext db) =>
-    await db.Materials.ToListAsync());
+    await db.Materials
+        .Include(m => m.MaterialImages)
+        .ToListAsync());
 
 app.MapGet("/api/materials/{id}", async (int id, TangledDbContext db) =>
-    await db.Materials.FindAsync(id) is Material material
+    await db.Materials
+        .Include(m => m.MaterialImages)
+        .FirstOrDefaultAsync(m => m.Id == id) is Material material
         ? Results.Ok(material)
         : Results.NotFound());
 
@@ -122,10 +126,14 @@ app.MapDelete("/api/materials/{id}", async (int id, TangledDbContext db) =>
 
 // Project Ideas endpoints
 app.MapGet("/api/projectideas", async (TangledDbContext db) =>
-    await db.ProjectIdeas.ToListAsync());
+    await db.ProjectIdeas
+        .Include(pi => pi.ProjectIdeaImages)
+        .ToListAsync());
 
 app.MapGet("/api/projectideas/{id}", async (int id, TangledDbContext db) =>
-    await db.ProjectIdeas.FindAsync(id) is ProjectIdea idea
+    await db.ProjectIdeas
+        .Include(pi => pi.ProjectIdeaImages)
+        .FirstOrDefaultAsync(pi => pi.Id == id) is ProjectIdea idea
         ? Results.Ok(idea)
         : Results.NotFound());
 
