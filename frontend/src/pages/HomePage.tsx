@@ -9,10 +9,14 @@ export default function HomePage() {
     queryFn: projectsApi.getAll,
   });
 
-  // Filter only completed projects
+  // Filter only completed projects and group by craft type
   const completedProjects = projects?.filter(
     (project) => project.status === ProjectStatus.Completed
   ) || [];
+
+  const knittingProjects = completedProjects.filter(p => p.craftType === CraftType.Knitting);
+  const crochetProjects = completedProjects.filter(p => p.craftType === CraftType.Crochet);
+  const embroideryProjects = completedProjects.filter(p => p.craftType === CraftType.Embroidery);
 
   const getCraftTypeLabel = (type: CraftType) => {
     switch (type) {
@@ -43,84 +47,115 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Completed Projects Gallery */}
+      {/* Completed Projects Gallery by Craft Type */}
       {!isLoading && completedProjects.length > 0 && (
-        <div className="mb-16 max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Completed Projects Gallery
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {completedProjects.map((project) => (
-              <Link
-                key={project.id}
-                to="/projects"
-                className="group relative bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden"
-              >
-                {/* Project Image or Placeholder */}
-                <div className={`h-48 bg-gradient-to-br ${getPlaceholderImage(project.craftType)} flex items-center justify-center`}>
-                  <span className="text-6xl text-white opacity-80">
-                    {project.craftType === CraftType.Knitting && '🧶'}
-                    {project.craftType === CraftType.Crochet && '🪡'}
-                    {project.craftType === CraftType.Embroidery && '🪡'}
-                  </span>
-                </div>
-                
-                {/* Project Info Overlay */}
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                      {project.name}
-                    </h3>
-                    {project.isFavorite && <span className="text-xl">⭐</span>}
-                  </div>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {getCraftTypeLabel(project.craftType)}
-                  </p>
-                  {project.completionDate && (
-                    <p className="text-xs text-gray-400">
-                      Completed: {new Date(project.completionDate).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
+        <div className="mb-16 max-w-6xl mx-auto space-y-12">
+          {/* Knitting Projects */}
+          {knittingProjects.length > 0 && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span className="mr-2">🧶</span> Knitting Projects
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {knittingProjects.map((project) => (
+                  <Link
+                    key={project.id}
+                    to="/projects"
+                    className="group relative bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden"
+                  >
+                    <div className={`h-48 bg-gradient-to-br ${getPlaceholderImage(project.craftType)} flex items-center justify-center`}>
+                      <span className="text-6xl text-white opacity-80">🧶</span>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                          {project.name}
+                        </h3>
+                        {project.isFavorite && <span className="text-xl">⭐</span>}
+                      </div>
+                      {project.completionDate && (
+                        <p className="text-xs text-gray-400">
+                          Completed: {new Date(project.completionDate).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Crochet Projects */}
+          {crochetProjects.length > 0 && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span className="mr-2">🪡</span> Crochet Projects
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {crochetProjects.map((project) => (
+                  <Link
+                    key={project.id}
+                    to="/projects"
+                    className="group relative bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden"
+                  >
+                    <div className={`h-48 bg-gradient-to-br ${getPlaceholderImage(project.craftType)} flex items-center justify-center`}>
+                      <span className="text-6xl text-white opacity-80">🪡</span>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                          {project.name}
+                        </h3>
+                        {project.isFavorite && <span className="text-xl">⭐</span>}
+                      </div>
+                      {project.completionDate && (
+                        <p className="text-xs text-gray-400">
+                          Completed: {new Date(project.completionDate).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Embroidery Projects */}
+          {embroideryProjects.length > 0 && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                <span className="mr-2">🪡</span> Embroidery Projects
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {embroideryProjects.map((project) => (
+                  <Link
+                    key={project.id}
+                    to="/projects"
+                    className="group relative bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden"
+                  >
+                    <div className={`h-48 bg-gradient-to-br ${getPlaceholderImage(project.craftType)} flex items-center justify-center`}>
+                      <span className="text-6xl text-white opacity-80">🪡</span>
+                    </div>
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                          {project.name}
+                        </h3>
+                        {project.isFavorite && <span className="text-xl">⭐</span>}
+                      </div>
+                      {project.completionDate && (
+                        <p className="text-xs text-gray-400">
+                          Completed: {new Date(project.completionDate).toLocaleDateString()}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
-
-      {/* Navigation Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <Link
-          to="/projects"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="text-4xl mb-3">📋</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Projects</h2>
-          <p className="text-gray-600">
-            Track your current and completed crafting projects
-          </p>
-        </Link>
-        <Link
-          to="/materials"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="text-4xl mb-3">🧵</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Materials</h2>
-          <p className="text-gray-600">
-            Manage your yarn stash and materials inventory
-          </p>
-        </Link>
-        <Link
-          to="/ideas"
-          className="p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="text-4xl mb-3">💡</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Ideas</h2>
-          <p className="text-gray-600">
-            Save project ideas and inspiration for the future
-          </p>
-        </Link>
-      </div>
     </div>
   );
 }
