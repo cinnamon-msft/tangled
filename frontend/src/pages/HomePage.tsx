@@ -18,14 +18,6 @@ export default function HomePage() {
   const crochetProjects = completedProjects.filter(p => p.craftType === CraftType.Crochet);
   const embroideryProjects = completedProjects.filter(p => p.craftType === CraftType.Embroidery);
 
-  const getCraftTypeLabel = (type: CraftType) => {
-    switch (type) {
-      case CraftType.Knitting: return '🧶 Knitting';
-      case CraftType.Crochet: return '🪡 Crochet';
-      case CraftType.Embroidery: return '🪡 Embroidery';
-    }
-  };
-
   // Placeholder image based on craft type
   const getPlaceholderImage = (craftType: CraftType) => {
     const colors = {
