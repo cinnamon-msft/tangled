@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tangled.Data;
 
@@ -10,9 +11,11 @@ using Tangled.Data;
 namespace Tangled.Data.Migrations
 {
     [DbContext(typeof(TangledDbContext))]
-    partial class TangledDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251117211445_RemoveIsFavoriteColumn")]
+    partial class RemoveIsFavoriteColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.0");

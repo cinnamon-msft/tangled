@@ -14,7 +14,6 @@ public class Project
     public string? Notes { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? CompletionDate { get; set; }
-    public bool IsFavorite { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 

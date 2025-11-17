@@ -143,7 +143,6 @@ public class TangledDbContext : DbContext
                 Notes = "Made as a gift for mom. She loved it!",
                 StartDate = now.AddDays(-30),
                 CompletionDate = now.AddDays(-15),
-                IsFavorite = true,
                 CreatedAt = now,
                 UpdatedAt = now
             },
@@ -157,7 +156,6 @@ public class TangledDbContext : DbContext
                 HookOrNeedleSize = "5.5mm",
                 Notes = "Working on this during my commute. 45 squares done, need 64 total.",
                 StartDate = now.AddDays(-60),
-                IsFavorite = false,
                 CreatedAt = now,
                 UpdatedAt = now
             },
@@ -171,7 +169,6 @@ public class TangledDbContext : DbContext
                 Notes = "Used DMC floss in various colors. Framed in 8-inch hoop.",
                 StartDate = now.AddDays(-20),
                 CompletionDate = now.AddDays(-5),
-                IsFavorite = true,
                 CreatedAt = now,
                 UpdatedAt = now
             }

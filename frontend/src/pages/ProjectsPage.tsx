@@ -54,9 +54,8 @@ export default function ProjectsPage() {
 
   const renderProjectCard = (project: Project) => (
     <div key={project.id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-      <div className="flex justify-between items-start mb-3">
+      <div className="mb-3">
         <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-        {project.isFavorite && <span className="text-xl">⭐</span>}
       </div>
       <div className="space-y-2 text-sm">
         <div className="flex items-center text-gray-600">

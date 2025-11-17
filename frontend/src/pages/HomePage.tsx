@@ -110,12 +110,9 @@ export default function HomePage() {
                       <span className="text-6xl text-white opacity-80">🧶</span>
                     </div>
                     <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                          {project.name}
-                        </h3>
-                        {project.isFavorite && <span className="text-xl">⭐</span>}
-                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
+                        {project.name}
+                      </h3>
                       {project.completionDate && (
                         <p className="text-xs text-gray-400">
                           Completed: {new Date(project.completionDate).toLocaleDateString()}
@@ -145,12 +142,9 @@ export default function HomePage() {
                       <span className="text-6xl text-white opacity-80">🪡</span>
                     </div>
                     <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                          {project.name}
-                        </h3>
-                        {project.isFavorite && <span className="text-xl">⭐</span>}
-                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
+                        {project.name}
+                      </h3>
                       {project.completionDate && (
                         <p className="text-xs text-gray-400">
                           Completed: {new Date(project.completionDate).toLocaleDateString()}
@@ -180,12 +174,9 @@ export default function HomePage() {
                       <span className="text-6xl text-white opacity-80">🪡</span>
                     </div>
                     <div className="p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
-                          {project.name}
-                        </h3>
-                        {project.isFavorite && <span className="text-xl">⭐</span>}
-                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
+                        {project.name}
+                      </h3>
                       {project.completionDate && (
                         <p className="text-xs text-gray-400">
                           Completed: {new Date(project.completionDate).toLocaleDateString()}
