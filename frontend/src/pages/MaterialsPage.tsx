@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { materialsApi } from '../api';
 import { YarnWeight } from '../types';
 import CreateMaterialModal from '../components/CreateMaterialModal';
+import ImageUpload from '../components/ImageUpload';
 
 export default function MaterialsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -101,6 +102,14 @@ export default function MaterialsPage() {
                   <p className="text-gray-500 text-xs mt-2 line-clamp-2">{material.notes}</p>
                 )}
               </div>
+              
+              <ImageUpload
+                entityId={material.id}
+                images={material.materialImages}
+                uploadFunction={materialsApi.uploadImage}
+                deleteFunction={materialsApi.deleteImage}
+                queryKey={['materials']}
+              />
             </div>
           ))}
         </div>

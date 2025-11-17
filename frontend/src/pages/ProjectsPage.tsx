@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { projectsApi } from '../api';
 import { CraftType, ProjectStatus, Project } from '../types';
 import CreateProjectModal from '../components/CreateProjectModal';
+import ImageUpload from '../components/ImageUpload';
 
 export default function ProjectsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -117,6 +118,14 @@ export default function ProjectsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {knittingProjects.map(renderProjectCard)}
               </div>
+              
+              <ImageUpload
+                entityId={project.id}
+                images={project.projectImages}
+                uploadFunction={projectsApi.uploadImage}
+                deleteFunction={projectsApi.deleteImage}
+                queryKey={['projects']}
+              />
             </div>
           )}
 

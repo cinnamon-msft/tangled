@@ -37,6 +37,26 @@ export const projectsApi = {
     apiCall<void>(`/projects/${id}`, {
       method: 'DELETE',
     }),
+  uploadImage: async (projectId: number, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/images`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Image upload failed: ${response.statusText}`);
+    }
+    return response.json();
+  },
+  deleteImage: async (projectId: number, imageId: number) => {
+    const response = await fetch(`${API_BASE_URL}/projects/${projectId}/images/${imageId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Image deletion failed: ${response.statusText}`);
+    }
+  },
 };
 
 // Materials API
@@ -57,6 +77,26 @@ export const materialsApi = {
     apiCall<void>(`/materials/${id}`, {
       method: 'DELETE',
     }),
+  uploadImage: async (materialId: number, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${API_BASE_URL}/materials/${materialId}/images`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Image upload failed: ${response.statusText}`);
+    }
+    return response.json();
+  },
+  deleteImage: async (materialId: number, imageId: number) => {
+    const response = await fetch(`${API_BASE_URL}/materials/${materialId}/images/${imageId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Image deletion failed: ${response.statusText}`);
+    }
+  },
 };
 
 // Project Ideas API
@@ -77,4 +117,24 @@ export const projectIdeasApi = {
     apiCall<void>(`/projectideas/${id}`, {
       method: 'DELETE',
     }),
+  uploadImage: async (ideaId: number, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${API_BASE_URL}/projectideas/${ideaId}/images`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error(`Image upload failed: ${response.statusText}`);
+    }
+    return response.json();
+  },
+  deleteImage: async (ideaId: number, imageId: number) => {
+    const response = await fetch(`${API_BASE_URL}/projectideas/${ideaId}/images/${imageId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`Image deletion failed: ${response.statusText}`);
+    }
+  },
 };
