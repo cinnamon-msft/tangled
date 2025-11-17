@@ -7,7 +7,7 @@ interface TokenInputModalProps {
 }
 
 export default function TokenInputModal({ isOpen, onClose }: TokenInputModalProps) {
-  const { login } = useAuth();
+  const { loginWithToken } = useAuth();
   const [token, setToken] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ export default function TokenInputModal({ isOpen, onClose }: TokenInputModalProp
     setIsLoading(true);
 
     try {
-      await login(token);
+      await loginWithToken(token);
       setToken('');
       onClose();
     } catch (err) {

@@ -37,6 +37,7 @@ jobs:
         working-directory: ./frontend
         env:
           VITE_GITHUB_CLIENT_ID: ${{ secrets.VITE_GITHUB_CLIENT_ID }}
+          VITE_OAUTH_PROXY_URL: ${{ secrets.VITE_OAUTH_PROXY_URL }}
           VITE_GITHUB_REPO_OWNER: cinnamon-msft
           VITE_GITHUB_REPO_NAME: tangled
           VITE_GITHUB_BRANCH: main
