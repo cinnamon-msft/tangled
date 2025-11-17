@@ -2,9 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
-  base: '/tangled/',
+  base: mode === 'production' ? '/tangled/' : '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -15,4 +15,4 @@ export default defineConfig({
     'import.meta.env.VITE_GITHUB_REPO_NAME': JSON.stringify(process.env.VITE_GITHUB_REPO_NAME || 'tangled'),
     'import.meta.env.VITE_GITHUB_BRANCH': JSON.stringify(process.env.VITE_GITHUB_BRANCH || 'main'),
   },
-})
+}))

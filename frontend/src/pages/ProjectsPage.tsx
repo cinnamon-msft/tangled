@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectsApi } from '../api';
-import { CraftType, ProjectStatus } from '../types';
-import CreateProjectModal from '../components/CreateProjectModal';
+import { CraftType, ProjectStatus } from '../types';import { useAuth } from '../contexts/AuthContext';import CreateProjectModal from '../components/CreateProjectModal';
 
 export default function ProjectsPage() {
+  const { isAuthenticated } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
@@ -51,12 +51,14 @@ export default function ProjectsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-        <button 
-          onClick={() => setIsCreateModalOpen(true)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
-        >
-          New Project
-        </button>
+        {isAuthenticated && (
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+          >
+            New Project
+          </button>
+        )}
       </div>
 
       <CreateProjectModal 

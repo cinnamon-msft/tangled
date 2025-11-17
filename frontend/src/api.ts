@@ -169,7 +169,58 @@ export const materialsApi = {
     const newId = materials.length > 0 ? Math.max(...materials.map((m) => m.id)) + 1 : 1;
     const now = new Date().toISOString();
     
-    const async (): Promise<ProjectIdea[]> => {
+    const newMaterial: Material = {
+      ...material,
+      id: newId,
+      createdAt: now,
+      updatedAt: now,
+    };
+    
+    const updatedMaterials = [...materials, newMaterial];
+    await commitDataFile('materials.json', updatedMaterials, `Add material: ${material.name}`);
+    
+    return newMaterial;
+  },
+  
+  update: async (material: UpdateMaterial): Promise<void> => {
+    const materials = await materialsApi.getAll();
+    const index = materials.findIndex((m) => m.id === material.id);
+    
+    if (index === -1) {
+      throw new Error(`Material with id ${material.id} not found`);
+    }
+    
+    const updatedMaterial: Material = {
+      ...materials[index],
+      ...material,
+      updatedAt: new Date().toISOString(),
+    };
+    
+    const updatedMaterials = [
+      ...materials.slice(0, index),
+      updatedMaterial,
+      ...materials.slice(index + 1),
+    ];
+    
+    await commitDataFile('materials.json', updatedMaterials, `Update material: ${updatedMaterial.name}`);
+  },
+  
+  delete: async (id: number): Promise<void> => {
+    const materials = await materialsApi.getAll();
+    const material = materials.find((m) => m.id === id);
+    
+    if (!material) {
+      throw new Error(`Material with id ${id} not found`);
+    }
+    
+    const updatedMaterials = materials.filter((m) => m.id !== id);
+    await commitDataFile('materials.json', updatedMaterials, `Delete material: ${material.name}`);
+  },
+};
+
+// Project Ideas API
+export const projectIdeasApi = {
+  getAll: async (): Promise<ProjectIdea[]> => {
     const data = await fetchStaticJSON<ProjectIdea>('ideas.json');
     const refreshedData = await checkAndRefreshData('ideas.json', data);
     return refreshedData.ideas as ProjectIdea[];
@@ -235,56 +286,5 @@ export const materialsApi = {
     
     const updatedIdeas = ideas.filter((i) => i.id !== id);
     await commitDataFile('ideas.json', updatedIdeas, `Delete project idea: ${idea.name}`);
-  }nst index = materials.findIndex((m) => m.id === material.id);
-    
-    if (index === -1) {
-      throw new Error(`Material with id ${material.id} not found`);
-    }
-    
-    const updatedMaterial: Material = {
-      ...materials[index],
-      ...material,
-      updatedAt: new Date().toISOString(),
-    };
-    
-    const updatedMaterials = [
-      ...materials.slice(0, index),
-      updatedMaterial,
-      ...materials.slice(index + 1),
-    ];
-    
-    await commitDataFile('materials.json', updatedMaterials, `Update material: ${updatedMaterial.name}`);
   },
-  
-  delete: async (id: number): Promise<void> => {
-    const materials = await materialsApi.getAll();
-    const material = materials.find((m) => m.id === id);
-    
-    if (!material) {
-      throw new Error(`Material with id ${id} not found`);
-    }
-    
-    const updatedMaterials = materials.filter((m) => m.id !== id);
-    await commitDataFile('materials.json', updatedMaterials, `Delete material: ${material.name}`);
-  },
-};
-
-// Project Ideas API
-export const projectIdeasApi = {
-  getAll: () => apiCall<ProjectIdea[]>('/projectideas'),
-  getById: (id: number) => apiCall<ProjectIdea>(`/projectideas/${id}`),
-  create: (idea: CreateProjectIdea) =>
-    apiCall<ProjectIdea>('/projectideas', {
-      method: 'POST',
-      body: JSON.stringify(idea),
-    }),
-  update: (idea: UpdateProjectIdea) =>
-    apiCall<void>(`/projectideas/${idea.id}`, {
-      method: 'PUT',
-      body: JSON.stringify(idea),
-    }),
-  delete: (id: number) =>
-    apiCall<void>(`/projectideas/${id}`, {
-      method: 'DELETE',
-    }),
 };
