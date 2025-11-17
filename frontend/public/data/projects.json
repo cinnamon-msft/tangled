@@ -1,0 +1,70 @@
+{
+  "_metadata": {
+    "lastSynced": "2025-11-17T00:00:00.000Z",
+    "version": "1.0.0"
+  },
+  "projects": [
+    {
+      "id": 1,
+      "name": "Cozy Winter Scarf",
+      "craftType": 0,
+      "status": 2,
+      "patternName": "Simple Garter Stitch Scarf",
+      "hookOrNeedleSize": "US 8",
+      "notes": "Made as a gift for mom. She loved it!",
+      "startDate": "2025-10-02T00:00:00.000Z",
+      "completionDate": "2025-10-17T00:00:00.000Z",
+      "isFavorite": false,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z",
+      "projectMaterials": [
+        {
+          "id": 1,
+          "projectId": 1,
+          "materialId": 1,
+          "yardsUsed": 250,
+          "createdAt": "2025-11-01T00:00:00.000Z"
+        }
+      ],
+      "projectImages": []
+    },
+    {
+      "id": 2,
+      "name": "Granny Square Blanket",
+      "craftType": 1,
+      "status": 1,
+      "patternName": "Classic Granny Square",
+      "hookOrNeedleSize": "5.5mm",
+      "notes": "Working on this during my commute. 45 squares done, need 64 total.",
+      "startDate": "2025-09-02T00:00:00.000Z",
+      "isFavorite": false,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z",
+      "projectMaterials": [
+        {
+          "id": 2,
+          "projectId": 2,
+          "materialId": 2,
+          "yardsUsed": 60,
+          "createdAt": "2025-11-01T00:00:00.000Z"
+        }
+      ],
+      "projectImages": []
+    },
+    {
+      "id": 3,
+      "name": "Floral Embroidery Hoop",
+      "craftType": 2,
+      "status": 2,
+      "patternName": "Wildflower Bouquet",
+      "notes": "Used DMC floss in various colors. Framed in 8-inch hoop.",
+      "startDate": "2025-10-12T00:00:00.000Z",
+      "completionDate": "2025-10-27T00:00:00.000Z",
+      "isFavorite": false,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z",
+      "projectMaterials": [],
+      "projectImages": []
+    }
+  ]
+}
