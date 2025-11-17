@@ -52,13 +52,13 @@ export default function TokenInputModal({ isOpen, onClose }: TokenInputModalProp
         <div className="space-y-4">
           <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
             <p className="text-sm text-blue-800 mb-2">
-              <strong>Authentication Required:</strong> This app needs a GitHub Personal Access Token to save your data directly to your repository.
+              <strong>One-time setup:</strong> Enter your GitHub Personal Access Token once and it will be saved securely in your browser.
             </p>
             <button
               onClick={handleCreateToken}
               className="text-sm text-blue-600 hover:text-blue-800 underline"
             >
-              → Create a new token on GitHub
+              → Create a new token on GitHub (opens in new tab)
             </button>
           </div>
 
@@ -75,9 +75,10 @@ export default function TokenInputModal({ isOpen, onClose }: TokenInputModalProp
                 placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
+                autoFocus
               />
               <p className="mt-1 text-xs text-gray-500">
-                Token must have <code className="bg-gray-100 px-1 rounded">repo</code> scope
+                Token must have <code className="bg-gray-100 px-1 rounded">repo</code> scope. Will be saved in your browser.
               </p>
             </div>
 
@@ -105,19 +106,23 @@ export default function TokenInputModal({ isOpen, onClose }: TokenInputModalProp
             </div>
           </form>
 
-          <div className="border-t pt-4">
+          <div className="border-t pt-4 space-y-2">
             <details className="text-xs text-gray-600">
               <summary className="cursor-pointer hover:text-gray-900 font-medium">
-                How to create a Personal Access Token
+                📖 How to create a Personal Access Token
               </summary>
               <ol className="mt-2 space-y-1 list-decimal list-inside">
                 <li>Click "Create a new token on GitHub" above</li>
                 <li>Give it a name like "Tangled App"</li>
+                <li>Set expiration to "No expiration" (recommended)</li>
                 <li>Select the <code className="bg-gray-100 px-1 rounded">repo</code> scope</li>
                 <li>Click "Generate token" at the bottom</li>
                 <li>Copy the token and paste it above</li>
               </ol>
             </details>
+            <div className="text-xs text-gray-500">
+              💡 <strong>Tip:</strong> Your token will be saved locally and you won't need to enter it again unless you clear your browser data or sign out.
+            </div>
           </div>
         </div>
       </div>
