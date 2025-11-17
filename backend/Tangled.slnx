@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="Tangled.Api/Tangled.Api.csproj" />
-  <Project Path="Tangled.Core/Tangled.Core.csproj" />
-  <Project Path="Tangled.Data/Tangled.Data.csproj" />
-</Solution>
