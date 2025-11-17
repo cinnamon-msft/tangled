@@ -9,11 +9,7 @@ export default function HomePage() {
     queryFn: projectsApi.getAll,
   });
 
-  // Filter projects by status
-  const inProgressProjects = projects?.filter(
-    (project) => project.status === ProjectStatus.InProgress
-  ) || [];
-
+  // Filter only completed projects and group by craft type
   const completedProjects = projects?.filter(
     (project) => project.status === ProjectStatus.Completed
   ) || [];
@@ -21,15 +17,6 @@ export default function HomePage() {
   const knittingProjects = completedProjects.filter(p => p.craftType === CraftType.Knitting);
   const crochetProjects = completedProjects.filter(p => p.craftType === CraftType.Crochet);
   const embroideryProjects = completedProjects.filter(p => p.craftType === CraftType.Embroidery);
-
-  const getCraftTypeLabel = (type: CraftType): string => {
-    switch (type) {
-      case CraftType.Knitting: return '🧶 Knitting';
-      case CraftType.Crochet: return '🪡 Crochet';
-      case CraftType.Embroidery: return '🪡 Embroidery';
-      default: return '🧶 Craft';
-    }
-  };
 
   // Placeholder image based on craft type
   const getPlaceholderImage = (craftType: CraftType) => {
@@ -51,41 +38,6 @@ export default function HomePage() {
           Your personal crafts project tracker for knitting, crochet, and embroidery
         </p>
       </div>
-
-      {/* Works in Progress Section */}
-      {!isLoading && inProgressProjects.length > 0 && (
-        <div className="mb-16 max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="mr-2">🚧</span> Works in Progress
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {inProgressProjects.map((project) => (
-              <Link
-                key={project.id}
-                to="/projects"
-                className="group relative bg-white rounded-lg shadow hover:shadow-xl transition-shadow overflow-hidden"
-              >
-                <div className={`h-48 bg-gradient-to-br ${getPlaceholderImage(project.craftType)} flex items-center justify-center`}>
-                  <span className="text-6xl text-white opacity-80">{getCraftTypeLabel(project.craftType).split(' ')[0]}</span>
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors mb-2">
-                    {project.name}
-                  </h3>
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <span className="mr-2">{getCraftTypeLabel(project.craftType)}</span>
-                  </div>
-                  {project.startDate && (
-                    <p className="text-xs text-gray-400">
-                      Started: {new Date(project.startDate).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Completed Projects Gallery by Craft Type */}
       {!isLoading && completedProjects.length > 0 && (
