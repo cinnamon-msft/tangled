@@ -44,6 +44,7 @@ export default function IdeasPage() {
 
       {editingIdea && (
         <EditIdeaModal
+          key={editingIdea.id}
           isOpen={!!editingIdea}
           onClose={() => setEditingIdea(null)}
           idea={editingIdea}

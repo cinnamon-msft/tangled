@@ -58,6 +58,7 @@ export default function MaterialsPage() {
 
       {editingMaterial && (
         <EditMaterialModal
+          key={editingMaterial.id}
           isOpen={!!editingMaterial}
           onClose={() => setEditingMaterial(null)}
           material={editingMaterial}

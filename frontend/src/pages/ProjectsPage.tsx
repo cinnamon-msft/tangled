@@ -68,6 +68,7 @@ export default function ProjectsPage() {
 
       {editingProject && (
         <EditProjectModal
+          key={editingProject.id}
           isOpen={!!editingProject}
           onClose={() => setEditingProject(null)}
           project={editingProject}
