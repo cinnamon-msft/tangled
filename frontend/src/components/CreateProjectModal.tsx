@@ -8,6 +8,51 @@ interface CreateProjectModalProps {
   onClose: () => void;
 }
 
+// Standard crochet hook sizes (US)
+const CROCHET_HOOK_SIZES = [
+  'B/1 (2.25mm)',
+  'C/2 (2.75mm)',
+  'D/3 (3.25mm)',
+  'E/4 (3.5mm)',
+  'F/5 (3.75mm)',
+  'G/6 (4mm)',
+  'H/8 (5mm)',
+  'I/9 (5.5mm)',
+  'J/10 (6mm)',
+  'K/10.5 (6.5mm)',
+  'L/11 (8mm)',
+  'M/13 (9mm)',
+  'N/15 (10mm)',
+  'P/16 (12mm)',
+  'Q (15mm)',
+  'S (19mm)',
+];
+
+// Standard knitting needle sizes (US)
+const KNITTING_NEEDLE_SIZES = [
+  '0 (2mm)',
+  '1 (2.25mm)',
+  '1.5 (2.5mm)',
+  '2 (2.75mm)',
+  '2.5 (3mm)',
+  '3 (3.25mm)',
+  '4 (3.5mm)',
+  '5 (3.75mm)',
+  '6 (4mm)',
+  '7 (4.5mm)',
+  '8 (5mm)',
+  '9 (5.5mm)',
+  '10 (6mm)',
+  '10.5 (6.5mm)',
+  '11 (8mm)',
+  '13 (9mm)',
+  '15 (10mm)',
+  '17 (12.75mm)',
+  '19 (15mm)',
+  '35 (19mm)',
+  '50 (25mm)',
+];
+
 export default function CreateProjectModal({ isOpen, onClose }: CreateProjectModalProps) {
   const queryClient = useQueryClient();
   const [formData, setFormData] = useState<CreateProject>({
@@ -114,17 +159,26 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Hook/Needle Size
-              </label>
-              <input
-                type="text"
-                value={formData.hookOrNeedleSize || ''}
-                onChange={(e) => setFormData({ ...formData, hookOrNeedleSize: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
+            {/* Only show hook/needle size for knitting and crochet, not embroidery */}
+            {(formData.craftType === CraftType.Knitting || formData.craftType === CraftType.Crochet) && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {formData.craftType === CraftType.Crochet ? 'Hook Size' : 'Needle Size'}
+                </label>
+                <select
+                  value={formData.hookOrNeedleSize || ''}
+                  onChange={(e) => setFormData({ ...formData, hookOrNeedleSize: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <option value="">Select a size</option>
+                  {(formData.craftType === CraftType.Crochet ? CROCHET_HOOK_SIZES : KNITTING_NEEDLE_SIZES).map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
