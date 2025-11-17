@@ -85,6 +85,60 @@ app.MapDelete("/api/projects/{id}", async (int id, TangledDbContext db) =>
     return Results.NoContent();
 });
 
+// Project Images endpoints
+app.MapPost("/api/projects/{id}/images", async (int id, IFormFile file, TangledDbContext db) =>
+{
+    var project = await db.Projects.FindAsync(id);
+    if (project is null) return Results.NotFound();
+
+    // Create uploads directory if it doesn't exist
+    var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "projects", id.ToString());
+    Directory.CreateDirectory(uploadsPath);
+
+    // Generate unique filename
+    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+    var filePath = Path.Combine(uploadsPath, fileName);
+
+    // Save file
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(stream);
+    }
+
+    // Create database record
+    var projectImage = new ProjectImage
+    {
+        ProjectId = id,
+        FileName = file.FileName,
+        FilePath = $"/uploads/projects/{id}/{fileName}",
+        UploadedAt = DateTime.UtcNow
+    };
+
+    db.ProjectImages.Add(projectImage);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/projects/{id}/images/{projectImage.Id}", projectImage);
+}).DisableAntiforgery();
+
+app.MapDelete("/api/projects/{projectId}/images/{imageId}", async (int projectId, int imageId, TangledDbContext db) =>
+{
+    var image = await db.ProjectImages
+        .FirstOrDefaultAsync(pi => pi.Id == imageId && pi.ProjectId == projectId);
+    
+    if (image is null) return Results.NotFound();
+
+    // Delete physical file
+    var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.FilePath.TrimStart('/'));
+    if (File.Exists(physicalPath))
+    {
+        File.Delete(physicalPath);
+    }
+
+    db.ProjectImages.Remove(image);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
 // Materials endpoints
 app.MapGet("/api/materials", async (TangledDbContext db) =>
     await db.Materials
@@ -124,6 +178,60 @@ app.MapDelete("/api/materials/{id}", async (int id, TangledDbContext db) =>
     return Results.NoContent();
 });
 
+// Material Images endpoints
+app.MapPost("/api/materials/{id}/images", async (int id, IFormFile file, TangledDbContext db) =>
+{
+    var material = await db.Materials.FindAsync(id);
+    if (material is null) return Results.NotFound();
+
+    // Create uploads directory if it doesn't exist
+    var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "materials", id.ToString());
+    Directory.CreateDirectory(uploadsPath);
+
+    // Generate unique filename
+    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+    var filePath = Path.Combine(uploadsPath, fileName);
+
+    // Save file
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(stream);
+    }
+
+    // Create database record
+    var materialImage = new MaterialImage
+    {
+        MaterialId = id,
+        FileName = file.FileName,
+        FilePath = $"/uploads/materials/{id}/{fileName}",
+        UploadedAt = DateTime.UtcNow
+    };
+
+    db.MaterialImages.Add(materialImage);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/materials/{id}/images/{materialImage.Id}", materialImage);
+}).DisableAntiforgery();
+
+app.MapDelete("/api/materials/{materialId}/images/{imageId}", async (int materialId, int imageId, TangledDbContext db) =>
+{
+    var image = await db.MaterialImages
+        .FirstOrDefaultAsync(mi => mi.Id == imageId && mi.MaterialId == materialId);
+    
+    if (image is null) return Results.NotFound();
+
+    // Delete physical file
+    var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.FilePath.TrimStart('/'));
+    if (File.Exists(physicalPath))
+    {
+        File.Delete(physicalPath);
+    }
+
+    db.MaterialImages.Remove(image);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
 // Project Ideas endpoints
 app.MapGet("/api/projectideas", async (TangledDbContext db) =>
     await db.ProjectIdeas
@@ -159,6 +267,60 @@ app.MapDelete("/api/projectideas/{id}", async (int id, TangledDbContext db) =>
     if (idea is null) return Results.NotFound();
     
     db.ProjectIdeas.Remove(idea);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// Project Idea Images endpoints
+app.MapPost("/api/projectideas/{id}/images", async (int id, IFormFile file, TangledDbContext db) =>
+{
+    var projectIdea = await db.ProjectIdeas.FindAsync(id);
+    if (projectIdea is null) return Results.NotFound();
+
+    // Create uploads directory if it doesn't exist
+    var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "projectideas", id.ToString());
+    Directory.CreateDirectory(uploadsPath);
+
+    // Generate unique filename
+    var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+    var filePath = Path.Combine(uploadsPath, fileName);
+
+    // Save file
+    using (var stream = new FileStream(filePath, FileMode.Create))
+    {
+        await file.CopyToAsync(stream);
+    }
+
+    // Create database record
+    var projectIdeaImage = new ProjectIdeaImage
+    {
+        ProjectIdeaId = id,
+        FileName = file.FileName,
+        FilePath = $"/uploads/projectideas/{id}/{fileName}",
+        UploadedAt = DateTime.UtcNow
+    };
+
+    db.ProjectIdeaImages.Add(projectIdeaImage);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/projectideas/{id}/images/{projectIdeaImage.Id}", projectIdeaImage);
+}).DisableAntiforgery();
+
+app.MapDelete("/api/projectideas/{projectIdeaId}/images/{imageId}", async (int projectIdeaId, int imageId, TangledDbContext db) =>
+{
+    var image = await db.ProjectIdeaImages
+        .FirstOrDefaultAsync(pii => pii.Id == imageId && pii.ProjectIdeaId == projectIdeaId);
+    
+    if (image is null) return Results.NotFound();
+
+    // Delete physical file
+    var physicalPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.FilePath.TrimStart('/'));
+    if (File.Exists(physicalPath))
+    {
+        File.Delete(physicalPath);
+    }
+
+    db.ProjectIdeaImages.Remove(image);
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
