@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type { GitHubUser } from '../types';
 import { setAuthErrorHandler } from '../services/github';
+import { supabase } from '../lib/supabase';
+import type { Provider } from '@supabase/supabase-js';
 
 interface AuthContextType {
   user: GitHubUser | null;
@@ -17,64 +19,56 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const GITHUB_API_BASE = 'https://api.github.com';
-const GITHUB_CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID;
-const OAUTH_PROXY_URL = import.meta.env.VITE_OAUTH_PROXY_URL;
 const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'cinnamon-msft';
-const REDIRECT_URI = typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}` : '';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<GitHubUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Handle OAuth callback and load auth state
+  // Initialize auth state from Supabase session
   useEffect(() => {
-    const handleOAuthCallback = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      
-      if (code) {
-        // Remove code from URL immediately
-        window.history.replaceState({}, document.title, window.location.pathname);
+    const initAuth = async () => {
+      try {
+        // Check for existing Supabase session
+        const { data: { session } } = await supabase.auth.getSession();
         
-        try {
-          if (!OAUTH_PROXY_URL) {
-            console.error('OAuth proxy URL not configured');
-            return;
+        if (session?.provider_token) {
+          await completeAuthentication(session.provider_token);
+        } else {
+          // Fallback: check localStorage for PAT
+          const storedToken = localStorage.getItem('github_token');
+          const storedUser = localStorage.getItem('github_user');
+
+          if (storedToken && storedUser) {
+            setToken(storedToken);
+            setUser(JSON.parse(storedUser));
           }
-
-          // Exchange code for token via proxy
-          const response = await fetch(OAUTH_PROXY_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code }),
-          });
-
-          const data = await response.json();
-          
-          if (data.access_token) {
-            await completeAuthentication(data.access_token);
-          } else {
-            console.error('OAuth error:', data.error);
-          }
-        } catch (error) {
-          console.error('OAuth callback error:', error);
         }
-      } else {
-        // Load existing auth from localStorage
-        const storedToken = localStorage.getItem('github_token');
-        const storedUser = localStorage.getItem('github_user');
-
-        if (storedToken && storedUser) {
-          setToken(storedToken);
-          setUser(JSON.parse(storedUser));
-        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     };
 
-    handleOAuthCallback();
+    initAuth();
+
+    // Listen for auth state changes from Supabase
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.provider_token) {
+        await completeAuthentication(session.provider_token);
+      } else {
+        setToken(null);
+        setUser(null);
+        localStorage.removeItem('github_token');
+        localStorage.removeItem('github_user');
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Set up auth error handler for github service
@@ -85,34 +79,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const handleAuthError = () => {
     console.log('Authentication error detected, clearing session');
     logout();
-    // User will need to manually re-enter token
   };
 
-  // OAuth flow - redirect to GitHub
-  const login = () => {
-    if (!GITHUB_CLIENT_ID) {
-      alert('GitHub OAuth is not configured. Please add VITE_GITHUB_CLIENT_ID to repository secrets.');
-      return;
+  // OAuth flow - use Supabase
+  const login = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github' as Provider,
+        options: {
+          scopes: 'repo',
+          redirectTo: window.location.origin + window.location.pathname,
+        },
+      });
+
+      if (error) {
+        console.error('OAuth error:', error);
+        alert(`Sign in failed: ${error.message}`);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Sign in failed. Please try again.');
     }
-
-    if (!OAUTH_PROXY_URL) {
-      alert('OAuth proxy is not configured. Please deploy the oauth-worker and set VITE_OAUTH_PROXY_URL.');
-      return;
-    }
-
-    // Generate random state for CSRF protection
-    const state = Math.random().toString(36).substring(7);
-    sessionStorage.setItem('oauth_state', state);
-
-    // Redirect to GitHub OAuth
-    const params = new URLSearchParams({
-      client_id: GITHUB_CLIENT_ID,
-      redirect_uri: REDIRECT_URI,
-      scope: 'repo',
-      state,
-    });
-
-    window.location.href = `https://github.com/login/oauth/authorize?${params.toString()}`;
   };
 
   // Fallback: login with PAT (for manual token entry)
@@ -131,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const completeAuthentication = async (accessToken: string) => {
     try {
-      // Fetch user info
+      // Fetch user info from GitHub
       const userResponse = await fetch(`${GITHUB_API_BASE}/user`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -157,7 +144,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Sign out from Supabase
+    await supabase.auth.signOut();
+    
+    // Clear local state
     setToken(null);
     setUser(null);
     localStorage.removeItem('github_token');
