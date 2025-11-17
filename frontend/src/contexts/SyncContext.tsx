@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
-import type { SyncStatus, SyncState } from '../types';
+import type { SyncState } from '../types';
 
 interface SyncContextType extends SyncState {
   recordSyncStart: () => void;

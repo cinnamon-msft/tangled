@@ -1,4 +1,4 @@
-import { Material, Project, ProjectIdea, CreateMaterial, UpdateMaterial, CreateProject, UpdateProject, CreateProjectIdea, UpdateProjectIdea, DataFileWithMetadata, SyncMetadata } from './types';
+import { Material, Project, ProjectIdea, CreateMaterial, UpdateMaterial, CreateProject, UpdateProject, CreateProjectIdea, UpdateProjectIdea, DataFileWithMetadata } from './types';
 import { commitJSONFile, getFileContent, decodeContent } from './services/github';
 
 const DATA_BASE_URL = '/data';
