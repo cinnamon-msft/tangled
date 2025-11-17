@@ -2,21 +2,16 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useSync } from '../contexts/SyncContext';
-import DeviceFlowModal from './DeviceFlowModal';
+import TokenInputModal from './TokenInputModal';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user, isAuthenticated, deviceCode, login, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const { status, lastSynced, error } = useSync();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showTokenModal, setShowTokenModal] = useState(false);
 
-  const handleLogin = async () => {
-    try {
-      await login();
-    } catch (error) {
-      console.error('Login failed:', error);
-      // Alert is shown by AuthContext for missing client ID
-      // Other errors are logged for debugging
-    }
+  const handleLogin = () => {
+    setShowTokenModal(true);
   };
 
   const getTimeSinceSync = (timestamp: string | null): string => {
@@ -175,10 +170,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </nav>
 
-      <DeviceFlowModal
-        isOpen={!!deviceCode}
-        deviceCode={deviceCode}
-        onClose={() => {}}
+      <TokenInputModal
+        isOpen={showTokenModal}
+        onClose={() => setShowTokenModal(false)}
       />
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
