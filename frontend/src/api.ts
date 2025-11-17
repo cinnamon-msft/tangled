@@ -1,7 +1,8 @@
 import { Material, Project, ProjectIdea, CreateMaterial, UpdateMaterial, CreateProject, UpdateProject, CreateProjectIdea, UpdateProjectIdea, DataFileWithMetadata } from './types';
 import { commitJSONFile, getFileContent, decodeContent } from './services/github';
 
-const DATA_BASE_URL = '/data';
+// Use import.meta.env.BASE_URL to respect Vite's base path configuration
+const DATA_BASE_URL = `${import.meta.env.BASE_URL}data`.replace(/\/+/g, '/');
 
 // Helper to get auth token from localStorage
 function getAuthToken(): string | null {
