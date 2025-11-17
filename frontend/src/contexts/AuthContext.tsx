@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         provider: 'github' as Provider,
         options: {
           scopes: 'repo',
-          redirectTo: window.location.origin + window.location.pathname,
+          redirectTo: window.location.origin,
         },
       });
 

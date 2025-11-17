@@ -39,14 +39,32 @@ This guide walks you through setting up Supabase authentication for Tangled.
    - **Client Secret** from GitHub
 2. Click **"Save"**
 
-## Step 3: Get Supabase API Keys
+## Step 3: Configure Redirect URLs
+
+This is crucial for OAuth to work properly!
+
+1. In Supabase dashboard, go to **Authentication** → **URL Configuration**
+2. Add your site URLs to **Redirect URLs** (one per line):
+   ```
+   http://localhost:3000
+   http://localhost:3000/tangled
+   https://cinnamon-msft.github.io/tangled
+   ```
+3. Click **"Save"**
+
+**Why both `/` and `/tangled`?**
+- OAuth redirects to the root (`http://localhost:3000`)
+- The app then redirects to `/tangled` with the auth tokens
+- Both need to be whitelisted for the flow to work
+
+## Step 4: Get Supabase API Keys
 
 1. In Supabase dashboard, go to **Settings** → **API**
 2. Copy these values:
    - **Project URL** (e.g., `https://xxxxx.supabase.co`)
    - **anon public** key (safe to use in frontend)
 
-## Step 4: Configure Your Application
+## Step 5: Configure Your Application
 
 ### Local Development
 
@@ -82,7 +100,7 @@ env:
   VITE_GITHUB_REPO_NAME: tangled
 ```
 
-## Step 5: Test Authentication
+## Step 6: Test Authentication
 
 1. Open your app locally or visit the deployed URL
 2. Click **"Sign in with GitHub"**
