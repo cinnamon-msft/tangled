@@ -5,7 +5,7 @@ import { useSync } from '../contexts/SyncContext';
 import TokenInputModal from './TokenInputModal';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, canEdit, logout } = useAuth();
   const { status, lastSynced, error } = useSync();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showTokenModal, setShowTokenModal] = useState(false);
@@ -132,10 +132,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           className="fixed inset-0 z-10"
                           onClick={() => setShowUserMenu(false)}
                         ></div>
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                        <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-20">
                           <div className="px-4 py-2 text-xs text-gray-500 border-b">
                             Last synced: {getTimeSinceSync(lastSynced)}
                           </div>
+                          {!canEdit && (
+                            <div className="px-4 py-2 text-xs text-amber-600 bg-amber-50 border-b">
+                              ⓘ Read-only access
+                            </div>
+                          )}
                           <button
                             onClick={() => {
                               logout();

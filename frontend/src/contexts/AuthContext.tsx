@@ -6,6 +6,7 @@ interface AuthContextType {
   user: GitHubUser | null;
   token: string | null;
   isAuthenticated: boolean;
+  canEdit: boolean;
   isLoading: boolean;
   login: (token: string) => Promise<void>;
   logout: () => void;
@@ -15,6 +16,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const GITHUB_API_BASE = 'https://api.github.com';
+const REPO_OWNER = import.meta.env.VITE_GITHUB_REPO_OWNER || 'cinnamon-msft';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<GitHubUser | null>(null);
@@ -97,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user,
     token,
     isAuthenticated: !!token && !!user,
+    canEdit: !!token && !!user && user.login.toLowerCase() === REPO_OWNER.toLowerCase(),
     isLoading,
     login,
     logout,
