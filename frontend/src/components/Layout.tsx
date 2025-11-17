@@ -14,6 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       await login();
     } catch (error) {
       console.error('Login failed:', error);
+      // Alert is shown by AuthContext for missing client ID
+      // Other errors are logged for debugging
     }
   };
 

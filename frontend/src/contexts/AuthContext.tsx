@@ -55,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async () => {
     if (!GITHUB_CLIENT_ID) {
+      alert('GitHub OAuth is not configured. Please add VITE_GITHUB_CLIENT_ID to repository secrets.\n\nSee GITHUB_SETUP.md for instructions.');
       throw new Error('GitHub Client ID is not configured');
     }
 
