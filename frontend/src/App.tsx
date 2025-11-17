@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider } from './contexts/AuthContext';
@@ -22,47 +21,23 @@ const queryClient = new QueryClient({
   },
 });
 
-// Component to handle OAuth callback redirect
-function AuthCallbackHandler() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Check if we have OAuth tokens in the URL hash (at root path)
-    if (location.pathname === '/' && location.hash.includes('access_token')) {
-      console.log('OAuth callback detected at root, redirecting to /tangled');
-      // Keep the hash and redirect to the app's basename
-      navigate('/tangled' + location.hash, { replace: true });
-    }
-  }, [location, navigate]);
-
-  return null;
-}
-
 function App() {
+  // Use base path for production (GitHub Pages), root for development
+  const basename = import.meta.env.PROD ? '/tangled' : '';
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <SyncProvider>
-          <BrowserRouter>
-            <AuthCallbackHandler />
-            <Routes>
-              <Route path="/tangled/*" element={
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/projects" element={<ProjectsPage />} />
-                    <Route path="/materials" element={<MaterialsPage />} />
-                    <Route path="/ideas" element={<IdeasPage />} />
-                  </Routes>
-                </Layout>
-              } />
-              <Route path="/" element={
-                <div style={{ padding: '20px', textAlign: 'center' }}>
-                  <p>Redirecting...</p>
-                </div>
-              } />
-            </Routes>
+          <BrowserRouter basename={basename}>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/materials" element={<MaterialsPage />} />
+                <Route path="/ideas" element={<IdeasPage />} />
+              </Routes>
+            </Layout>
           </BrowserRouter>
         </SyncProvider>
       </AuthProvider>

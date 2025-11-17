@@ -46,16 +46,12 @@ This is crucial for OAuth to work properly!
 1. In Supabase dashboard, go to **Authentication** → **URL Configuration**
 2. Add your site URLs to **Redirect URLs** (one per line):
    ```
-   http://localhost:3000
-   http://localhost:3000/tangled
-   https://cinnamon-msft.github.io/tangled
+   http://localhost:3000/
+   https://cinnamon-msft.github.io/tangled/
    ```
 3. Click **"Save"**
 
-**Why both `/` and `/tangled`?**
-- OAuth redirects to the root (`http://localhost:3000`)
-- The app then redirects to `/tangled` with the auth tokens
-- Both need to be whitelisted for the flow to work
+**Note:** The trailing slash is important for GitHub Pages!
 
 ## Step 4: Get Supabase API Keys
 

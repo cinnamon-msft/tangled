@@ -84,11 +84,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // OAuth flow - use Supabase
   const login = async () => {
     try {
+      // For GitHub Pages, we need to redirect to the base path
+      // In production: https://cinnamon-msft.github.io/tangled/
+      // In development: http://localhost:3000/
+      const redirectUrl = import.meta.env.PROD 
+        ? `${window.location.origin}/tangled/`
+        : window.location.origin;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github' as Provider,
         options: {
           scopes: 'repo',
-          redirectTo: window.location.origin,
+          redirectTo: redirectUrl,
         },
       });
 
