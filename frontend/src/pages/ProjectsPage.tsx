@@ -72,9 +72,8 @@ export default function ProjectsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => (
             <div key={project.id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-              <div className="flex justify-between items-start mb-3">
+              <div className="mb-3">
                 <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-                {project.isFavorite && <span className="text-xl">⭐</span>}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center text-gray-600">
