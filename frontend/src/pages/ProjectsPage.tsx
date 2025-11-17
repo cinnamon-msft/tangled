@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectsApi } from '../api';
 import { CraftType, ProjectStatus, Project } from '../types';
+import { useAuth } from '../contexts/AuthContext';
 import CreateProjectModal from '../components/CreateProjectModal';
 
 export default function ProjectsPage() {
+  const { isAuthenticated } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
@@ -54,9 +56,8 @@ export default function ProjectsPage() {
 
   const renderProjectCard = (project: Project) => (
     <div key={project.id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-      <div className="flex justify-between items-start mb-3">
+      <div className="mb-3">
         <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-        {project.isFavorite && <span className="text-xl">⭐</span>}
       </div>
       <div className="space-y-2 text-sm">
         <div className="flex items-center text-gray-600">
@@ -89,12 +90,14 @@ export default function ProjectsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-        <button 
-          onClick={() => setIsCreateModalOpen(true)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
-        >
-          New Project
-        </button>
+        {isAuthenticated && (
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+          >
+            New Project
+          </button>
+        )}
       </div>
 
       <CreateProjectModal 

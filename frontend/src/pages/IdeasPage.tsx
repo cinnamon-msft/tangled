@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectIdeasApi } from '../api';
+import { useAuth } from '../contexts/AuthContext';
 import CreateIdeaModal from '../components/CreateIdeaModal';
 
 export default function IdeasPage() {
+  const { isAuthenticated } = useAuth();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const { data: ideas, isLoading, error } = useQuery({
     queryKey: ['projectIdeas'],
@@ -26,12 +28,14 @@ export default function IdeasPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Project Ideas</h1>
-        <button 
-          onClick={() => setIsCreateModalOpen(true)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
-        >
-          New Idea
-        </button>
+        {isAuthenticated && (
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+          >
+            New Idea
+          </button>
+        )}
       </div>
 
       <CreateIdeaModal 

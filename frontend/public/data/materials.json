@@ -1,0 +1,47 @@
+{
+  "_metadata": {
+    "lastSynced": "2025-11-17T00:00:00.000Z",
+    "version": "1.0.0"
+  },
+  "materials": [
+    {
+      "id": 1,
+      "name": "Wool-Ease Yarn",
+      "brand": "Lion Brand",
+      "color": "Navy",
+      "weight": 4,
+      "fiberContent": "80% Acrylic, 20% Wool",
+      "yardage": 197,
+      "remainingYardage": 197,
+      "skeinQuantity": 3,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Cotton Yarn",
+      "brand": "Lily Sugar'n Cream",
+      "color": "Hot Pink",
+      "weight": 4,
+      "fiberContent": "100% Cotton",
+      "yardage": 120,
+      "remainingYardage": 60,
+      "skeinQuantity": 2,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Baby Alpaca Fingering",
+      "brand": "Cascade Yarns",
+      "color": "Sage Green",
+      "weight": 1,
+      "fiberContent": "100% Baby Alpaca",
+      "yardage": 437,
+      "remainingYardage": 437,
+      "skeinQuantity": 2,
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z"
+    }
+  ]
+}
