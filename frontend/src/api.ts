@@ -16,6 +16,11 @@ async function apiCall<T>(endpoint: string, options?: RequestInit): Promise<T> {
     throw new Error(`API call failed: ${response.statusText}`);
   }
 
+  // Handle 204 No Content responses (no body to parse)
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
   return response.json();
 }
 

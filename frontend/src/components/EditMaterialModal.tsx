@@ -31,8 +31,8 @@ export default function EditMaterialModal({ isOpen, onClose, material }: EditMat
 
   const updateMutation = useMutation({
     mutationFn: materialsApi.update,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['materials'] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['materials'] });
       onClose();
     },
   });

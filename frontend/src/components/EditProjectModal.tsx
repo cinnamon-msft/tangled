@@ -27,8 +27,8 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
 
   const updateMutation = useMutation({
     mutationFn: projectsApi.update,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['projects'] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
       onClose();
     },
   });

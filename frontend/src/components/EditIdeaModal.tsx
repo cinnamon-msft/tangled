@@ -22,8 +22,8 @@ export default function EditIdeaModal({ isOpen, onClose, idea }: EditIdeaModalPr
 
   const updateMutation = useMutation({
     mutationFn: projectIdeasApi.update,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['projectIdeas'] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projectIdeas'] });
       onClose();
     },
   });
