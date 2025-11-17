@@ -157,7 +157,11 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               <input
                 type="date"
                 value={formData.completionDate || ''}
-                onChange={(e) => setFormData({ ...formData, completionDate: e.target.value })}
+                onChange={(e) => setFormData({ 
+                  ...formData, 
+                  completionDate: e.target.value,
+                  status: e.target.value ? ProjectStatus.Completed : formData.status
+                })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
