@@ -99,6 +99,20 @@ export default function ProjectsPage() {
                     Started: {new Date(project.startDate).toLocaleDateString()}
                   </p>
                 )}
+                {project.projectMaterials && project.projectMaterials.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <p className="text-xs font-medium text-gray-700 mb-1">Materials:</p>
+                    <div className="space-y-1">
+                      {project.projectMaterials.map((pm) => (
+                        <div key={pm.id} className="text-xs text-gray-600">
+                          <span className="font-medium">{pm.material?.name}</span>
+                          {pm.material?.color && <span className="text-gray-400"> ({pm.material.color})</span>}
+                          {pm.yardsUsed && <span className="text-gray-400"> • {pm.yardsUsed} yds</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}

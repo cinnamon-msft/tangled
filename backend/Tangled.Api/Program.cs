@@ -87,10 +87,16 @@ app.MapDelete("/api/projects/{id}", async (int id, TangledDbContext db) =>
 
 // Materials endpoints
 app.MapGet("/api/materials", async (TangledDbContext db) =>
-    await db.Materials.ToListAsync());
+    await db.Materials
+        .Include(m => m.ProjectMaterials)
+            .ThenInclude(pm => pm.Project)
+        .ToListAsync());
 
 app.MapGet("/api/materials/{id}", async (int id, TangledDbContext db) =>
-    await db.Materials.FindAsync(id) is Material material
+    await db.Materials
+        .Include(m => m.ProjectMaterials)
+            .ThenInclude(pm => pm.Project)
+        .FirstOrDefaultAsync(m => m.Id == id) is Material material
         ? Results.Ok(material)
         : Results.NotFound());
 
@@ -151,6 +157,55 @@ app.MapDelete("/api/projectideas/{id}", async (int id, TangledDbContext db) =>
     if (idea is null) return Results.NotFound();
     
     db.ProjectIdeas.Remove(idea);
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+// ProjectMaterial endpoints
+app.MapGet("/api/projectmaterials", async (TangledDbContext db) =>
+    await db.ProjectMaterials
+        .Include(pm => pm.Project)
+        .Include(pm => pm.Material)
+        .ToListAsync());
+
+app.MapGet("/api/projectmaterials/{id}", async (int id, TangledDbContext db) =>
+    await db.ProjectMaterials
+        .Include(pm => pm.Project)
+        .Include(pm => pm.Material)
+        .FirstOrDefaultAsync(pm => pm.Id == id) is ProjectMaterial projectMaterial
+        ? Results.Ok(projectMaterial)
+        : Results.NotFound());
+
+app.MapPost("/api/projectmaterials", async (ProjectMaterial projectMaterial, TangledDbContext db) =>
+{
+    projectMaterial.CreatedAt = DateTime.UtcNow;
+    db.ProjectMaterials.Add(projectMaterial);
+    await db.SaveChangesAsync();
+    
+    // Reload with includes
+    var created = await db.ProjectMaterials
+        .Include(pm => pm.Project)
+        .Include(pm => pm.Material)
+        .FirstOrDefaultAsync(pm => pm.Id == projectMaterial.Id);
+    
+    return Results.Created($"/api/projectmaterials/{projectMaterial.Id}", created);
+});
+
+app.MapPut("/api/projectmaterials/{id}", async (int id, ProjectMaterial projectMaterial, TangledDbContext db) =>
+{
+    if (id != projectMaterial.Id) return Results.BadRequest();
+    
+    db.Entry(projectMaterial).State = EntityState.Modified;
+    await db.SaveChangesAsync();
+    return Results.NoContent();
+});
+
+app.MapDelete("/api/projectmaterials/{id}", async (int id, TangledDbContext db) =>
+{
+    var projectMaterial = await db.ProjectMaterials.FindAsync(id);
+    if (projectMaterial is null) return Results.NotFound();
+    
+    db.ProjectMaterials.Remove(projectMaterial);
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
