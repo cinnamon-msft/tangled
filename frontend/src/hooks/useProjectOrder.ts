@@ -3,7 +3,7 @@ import { Project } from '../types';
 
 const STORAGE_KEY = 'tangled-project-order';
 
-interface ProjectOrderMap {
+export interface ProjectOrderMap {
   inProgress: number[];
   knitting: number[];
   crochet: number[];
