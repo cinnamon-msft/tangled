@@ -139,6 +139,34 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Start Date
+              </label>
+              <input
+                type="date"
+                value={formData.startDate || ''}
+                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Completion Date
+              </label>
+              <input
+                type="date"
+                value={formData.completionDate || ''}
+                onChange={(e) => setFormData({ 
+                  ...formData, 
+                  completionDate: e.target.value,
+                  status: e.target.value ? ProjectStatus.Completed : formData.status
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+
+            <div>
               <label className="flex items-center">
                 <input
                   type="checkbox"
