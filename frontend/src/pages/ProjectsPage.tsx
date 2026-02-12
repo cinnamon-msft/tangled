@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { projectsApi } from '../api';
-import { CraftType, ProjectStatus } from '../types';
+import { CraftType, ProjectStatus, Project } from '../types';
 import CreateProjectModal from '../components/CreateProjectModal';
+import EditProjectModal from '../components/EditProjectModal';
 
 export default function ProjectsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
   const { data: projects, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: projectsApi.getAll,
@@ -64,6 +66,15 @@ export default function ProjectsPage() {
         onClose={() => setIsCreateModalOpen(false)} 
       />
 
+      {editingProject && (
+        <EditProjectModal
+          key={editingProject.id}
+          isOpen={!!editingProject}
+          onClose={() => setEditingProject(null)}
+          project={editingProject}
+        />
+      )}
+
       {!projects || projects.length === 0 ? (
         <div className="text-center py-12 text-gray-500">
           No projects yet. Create your first one!
@@ -74,7 +85,18 @@ export default function ProjectsPage() {
             <div key={project.id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
               <div className="flex justify-between items-start mb-3">
                 <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
-                {project.isFavorite && <span className="text-xl">⭐</span>}
+                <div className="flex items-center space-x-2">
+                  {project.isFavorite && <span className="text-xl">⭐</span>}
+                  <button
+                    onClick={() => setEditingProject(project)}
+                    className="text-gray-400 hover:text-gray-600"
+                    aria-label="Edit project"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                  </button>
+                </div>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center text-gray-600">
