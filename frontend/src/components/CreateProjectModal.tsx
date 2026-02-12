@@ -59,7 +59,6 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
     name: '',
     craftType: CraftType.Knitting,
     status: ProjectStatus.Planning,
-    isFavorite: false,
   });
 
   const createMutation = useMutation({
@@ -71,7 +70,6 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
         name: '',
         craftType: CraftType.Knitting,
         status: ProjectStatus.Planning,
-        isFavorite: false,
       });
     },
   });
@@ -90,7 +88,7 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">New Project</h2>
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -211,25 +209,13 @@ export default function CreateProjectModal({ isOpen, onClose }: CreateProjectMod
               <input
                 type="date"
                 value={formData.completionDate || ''}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
+                onChange={(e) => setFormData({
+                  ...formData,
                   completionDate: e.target.value,
                   status: e.target.value ? ProjectStatus.Completed : formData.status
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-            </div>
-
-            <div>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={formData.isFavorite}
-                  onChange={(e) => setFormData({ ...formData, isFavorite: e.target.checked })}
-                  className="mr-2"
-                />
-                <span className="text-sm font-medium text-gray-700">Mark as Favorite</span>
-              </label>
             </div>
 
             <div className="flex justify-end space-x-3 pt-4">

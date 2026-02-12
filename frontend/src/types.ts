@@ -58,7 +58,6 @@ export interface Project {
   notes?: string;
   startDate?: string;
   completionDate?: string;
-  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
   projectMaterials?: ProjectMaterial[];
