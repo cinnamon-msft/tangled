@@ -57,6 +57,7 @@ export interface Project {
   notes?: string;
   startDate?: string;
   completionDate?: string;
+  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
   projectMaterials?: ProjectMaterial[];
@@ -102,65 +103,3 @@ export type UpdateProject = Partial<CreateProject> & { id: number };
 
 export type CreateProjectIdea = Omit<ProjectIdea, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateProjectIdea = Partial<CreateProjectIdea> & { id: number };
-
-// GitHub OAuth Types
-export interface DeviceCodeResponse {
-  device_code: string;
-  user_code: string;
-  verification_uri: string;
-  expires_in: number;
-  interval: number;
-}
-
-export interface AccessTokenResponse {
-  access_token: string;
-  token_type: string;
-  scope: string;
-}
-
-export interface GitHubUser {
-  login: string;
-  id: number;
-  avatar_url: string;
-  name: string | null;
-  email: string | null;
-}
-
-// GitHub API Types
-export interface GitHubFileResponse {
-  name: string;
-  path: string;
-  sha: string;
-  size: number;
-  content: string;
-  encoding: string;
-}
-
-export interface GitHubCommitResponse {
-  content: GitHubFileResponse;
-  commit: {
-    sha: string;
-    message: string;
-  };
-}
-
-// Sync Metadata
-export interface SyncMetadata {
-  lastSynced: string;
-  version: string;
-}
-
-export interface DataFileWithMetadata<T> {
-  _metadata: SyncMetadata;
-  [key: string]: T[] | SyncMetadata;
-}
-
-// Sync Status
-export type SyncStatus = 'idle' | 'syncing' | 'error';
-
-export interface SyncState {
-  status: SyncStatus;
-  lastSynced: string | null;
-  pendingOperations: number;
-  error: string | null;
-}

@@ -22,6 +22,7 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
     notes: project.notes,
     startDate: project.startDate,
     completionDate: project.completionDate,
+    isFavorite: project.isFavorite,
   }));
 
   const updateMutation = useMutation({
@@ -125,6 +126,19 @@ export default function EditProjectModal({ isOpen, onClose, project }: EditProje
                 onChange={(e) => setFormData({ ...formData, hookOrNeedleSize: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
+            </div>
+
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="isFavorite"
+                checked={formData.isFavorite || false}
+                onChange={(e) => setFormData({ ...formData, isFavorite: e.target.checked })}
+                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+              />
+              <label htmlFor="isFavorite" className="ml-2 block text-sm font-medium text-gray-700">
+                Favorite
+              </label>
             </div>
 
             <div>
