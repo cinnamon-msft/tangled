@@ -135,23 +135,33 @@ tangled/
 
 ### API Endpoints
 
+**Projects:**
 - `GET /api/projects` - Get all projects
+- `GET /api/projects/{id}` - Get project by ID
 - `POST /api/projects` - Create new project
 - `PUT /api/projects/{id}` - Update project
 - `DELETE /api/projects/{id}` - Delete project
+- `POST /api/projects/{id}/images` - Upload image to project
+- `DELETE /api/projects/{projectId}/images/{imageId}` - Delete project image
 
+**Materials:**
 - `GET /api/materials` - Get all materials
+- `GET /api/materials/{id}` - Get material by ID
 - `POST /api/materials` - Create new material
 - `PUT /api/materials/{id}` - Update material
 - `DELETE /api/materials/{id}` - Delete material
+- `POST /api/materials/{id}/images` - Upload image to material
+- `DELETE /api/materials/{materialId}/images/{imageId}` - Delete material image
 
+**Project Ideas:**
 - `GET /api/projectideas` - Get all project ideas
+- `GET /api/projectideas/{id}` - Get project idea by ID
 - `POST /api/projectideas` - Create new idea
 - `PUT /api/projectideas/{id}` - Update idea
 - `DELETE /api/projectideas/{id}` - Delete idea
+- `POST /api/projectideas/{id}/images` - Upload image to project idea
+- `DELETE /api/projectideas/{projectIdeaId}/images/{imageId}` - Delete project idea image
 
 ## License
 
 MIT
-
- 

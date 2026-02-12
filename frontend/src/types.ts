@@ -44,6 +44,7 @@ export interface Material {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  materialImages?: MaterialImage[];
 }
 
 export interface Project {
@@ -83,6 +84,7 @@ export interface ProjectIdea {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  projectIdeaImages?: ProjectIdeaImage[];
 }
 
 export interface ProjectImage {
@@ -92,6 +94,24 @@ export interface ProjectImage {
   filePath: string;
   uploadedAt: string;
   project?: Project;
+}
+
+export interface MaterialImage {
+  id: number;
+  materialId: number;
+  fileName: string;
+  filePath: string;
+  uploadedAt: string;
+  material?: Material;
+}
+
+export interface ProjectIdeaImage {
+  id: number;
+  projectIdeaId: number;
+  fileName: string;
+  filePath: string;
+  uploadedAt: string;
+  projectIdea?: ProjectIdea;
 }
 
 // DTOs for creating/updating

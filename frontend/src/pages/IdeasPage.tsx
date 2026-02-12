@@ -4,6 +4,7 @@ import { projectIdeasApi } from '../api';
 import { ProjectIdea } from '../types';
 import CreateIdeaModal from '../components/CreateIdeaModal';
 import EditIdeaModal from '../components/EditIdeaModal';
+import ImageUpload from '../components/ImageUpload';
 
 export default function IdeasPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -93,6 +94,14 @@ export default function IdeasPage() {
                   <p className="text-gray-500 text-xs mt-2 line-clamp-2">{idea.notes}</p>
                 )}
               </div>
+              
+              <ImageUpload
+                entityId={idea.id}
+                images={idea.projectIdeaImages}
+                uploadFunction={projectIdeasApi.uploadImage}
+                deleteFunction={projectIdeasApi.deleteImage}
+                queryKey={['projectIdeas']}
+              />
             </div>
           ))}
         </div>
