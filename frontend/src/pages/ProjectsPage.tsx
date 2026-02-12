@@ -86,6 +86,20 @@ export default function ProjectsPage() {
             Completed: {new Date(project.completionDate).toLocaleDateString()}
           </p>
         )}
+        {project.projectMaterials && project.projectMaterials.length > 0 && (
+          <div className="mt-3 pt-3 border-t border-gray-200">
+            <p className="text-xs font-medium text-gray-700 mb-1">Materials:</p>
+            <div className="space-y-1">
+              {project.projectMaterials.map((pm) => (
+                <div key={pm.id} className="text-xs text-gray-600">
+                  <span className="font-medium">{pm.material?.name}</span>
+                  {pm.material?.color && <span className="text-gray-400"> ({pm.material.color})</span>}
+                  {pm.yardsUsed && <span className="text-gray-400"> • {pm.yardsUsed} yds</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -94,7 +108,7 @@ export default function ProjectsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
-        <button 
+        <button
           onClick={() => setIsCreateModalOpen(true)}
           className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
         >
@@ -102,9 +116,9 @@ export default function ProjectsPage() {
         </button>
       </div>
 
-      <CreateProjectModal 
-        isOpen={isCreateModalOpen} 
-        onClose={() => setIsCreateModalOpen(false)} 
+      <CreateProjectModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
       />
 
       {!projects || projects.length === 0 ? (

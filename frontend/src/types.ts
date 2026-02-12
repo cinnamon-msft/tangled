@@ -44,6 +44,7 @@ export interface Material {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  projectMaterials?: ProjectMaterial[];
 }
 
 export interface Project {
@@ -103,3 +104,10 @@ export type UpdateProject = Partial<CreateProject> & { id: number };
 
 export type CreateProjectIdea = Omit<ProjectIdea, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateProjectIdea = Partial<CreateProjectIdea> & { id: number };
+
+export type CreateProjectMaterial = {
+  projectId: number;
+  materialId: number;
+  yardsUsed?: number;
+};
+export type UpdateProjectMaterial = Partial<CreateProjectMaterial> & { id: number };
