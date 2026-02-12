@@ -81,6 +81,11 @@ export default function ProjectsPage() {
             Started: {new Date(project.startDate).toLocaleDateString()}
           </p>
         )}
+        {project.completionDate && (
+          <p className="text-gray-400 text-xs">
+            Completed: {new Date(project.completionDate).toLocaleDateString()}
+          </p>
+        )}
       </div>
     </div>
   );
