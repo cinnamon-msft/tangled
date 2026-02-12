@@ -3,9 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { materialsApi } from '../api';
 import { YarnWeight } from '../types';
 import CreateMaterialModal from '../components/CreateMaterialModal';
+import AssignMaterialModal from '../components/AssignMaterialModal';
 
 export default function MaterialsPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const { data: materials, isLoading, error } = useQuery({
     queryKey: ['materials'],
     queryFn: materialsApi.getAll,
@@ -41,17 +43,29 @@ export default function MaterialsPage() {
     <div className="px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Materials</h1>
-        <button 
-          onClick={() => setIsCreateModalOpen(true)}
-          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
-        >
-          Add Material
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={() => setIsAssignModalOpen(true)}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+          >
+            Assign to Project
+          </button>
+          <button 
+            onClick={() => setIsCreateModalOpen(true)}
+            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+          >
+            Add Material
+          </button>
+        </div>
       </div>
 
       <CreateMaterialModal 
         isOpen={isCreateModalOpen} 
         onClose={() => setIsCreateModalOpen(false)} 
+      />
+      <AssignMaterialModal 
+        isOpen={isAssignModalOpen} 
+        onClose={() => setIsAssignModalOpen(false)} 
       />
 
       {!materials || materials.length === 0 ? (
@@ -99,6 +113,19 @@ export default function MaterialsPage() {
                 )}
                 {material.notes && (
                   <p className="text-gray-500 text-xs mt-2 line-clamp-2">{material.notes}</p>
+                )}
+                {material.projectMaterials && material.projectMaterials.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <p className="text-xs font-medium text-gray-700 mb-1">Used in Projects:</p>
+                    <div className="space-y-1">
+                      {material.projectMaterials.map((pm) => (
+                        <div key={pm.id} className="text-xs text-gray-600">
+                          <span className="font-medium">{pm.project?.name}</span>
+                          {pm.yardsUsed && <span className="text-gray-400"> • {pm.yardsUsed} yds</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>

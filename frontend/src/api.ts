@@ -1,4 +1,4 @@
-import { Material, Project, ProjectIdea, CreateMaterial, UpdateMaterial, CreateProject, UpdateProject, CreateProjectIdea, UpdateProjectIdea } from './types';
+import { Material, Project, ProjectIdea, ProjectMaterial, CreateMaterial, UpdateMaterial, CreateProject, UpdateProject, CreateProjectIdea, UpdateProjectIdea, CreateProjectMaterial, UpdateProjectMaterial } from './types';
 
 const API_BASE_URL = '/api';
 
@@ -75,6 +75,26 @@ export const projectIdeasApi = {
     }),
   delete: (id: number) =>
     apiCall<void>(`/projectideas/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
+// ProjectMaterials API
+export const projectMaterialsApi = {
+  getAll: () => apiCall<ProjectMaterial[]>('/projectmaterials'),
+  getById: (id: number) => apiCall<ProjectMaterial>(`/projectmaterials/${id}`),
+  create: (projectMaterial: CreateProjectMaterial) =>
+    apiCall<ProjectMaterial>('/projectmaterials', {
+      method: 'POST',
+      body: JSON.stringify(projectMaterial),
+    }),
+  update: (projectMaterial: UpdateProjectMaterial) =>
+    apiCall<void>(`/projectmaterials/${projectMaterial.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(projectMaterial),
+    }),
+  delete: (id: number) =>
+    apiCall<void>(`/projectmaterials/${id}`, {
       method: 'DELETE',
     }),
 };
