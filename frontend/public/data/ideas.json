@@ -1,0 +1,25 @@
+{
+  "_metadata": {
+    "lastSynced": "2025-11-17T00:00:00.000Z",
+    "version": "1.0.0"
+  },
+  "ideas": [
+    {
+      "id": 1,
+      "name": "Lace Shawl",
+      "description": "Delicate triangular shawl with intricate lace pattern",
+      "estimatedDifficulty": "Advanced",
+      "notes": "Want to use the sage green alpaca yarn for this",
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Amigurumi Octopus",
+      "description": "Cute stuffed octopus toy",
+      "estimatedDifficulty": "Intermediate",
+      "createdAt": "2025-11-01T00:00:00.000Z",
+      "updatedAt": "2025-11-01T00:00:00.000Z"
+    }
+  ]
+}
