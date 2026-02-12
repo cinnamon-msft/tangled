@@ -51,7 +51,10 @@ This is crucial for OAuth to work properly!
    ```
 3. Click **"Save"**
 
-**Note:** The trailing slash is important for GitHub Pages!
+**Important Notes:**
+- The trailing slash is important for GitHub Pages!
+- Both URLs are needed: localhost for local testing, GitHub Pages for production
+- The app automatically detects which environment you're in and redirects accordingly
 
 ## Step 4: Get Supabase API Keys
 
